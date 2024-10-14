@@ -1,0 +1,96 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - beta
+  workflow_dispatch:
+
+jobs:
+  setup:
+    name: Set environment variables
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      DEPLOY_ENVIRONMENT: ${{ steps.env.outputs.DEPLOY_ENVIRONMENT }}
+      DEPLOY_SUBDOMAIN: ${{ steps.env.outputs.DEPLOY_SUBDOMAIN }}
+    steps:
+      - name: "☁️ compute environment variables"
+        id: env
+        run: |
+          DEPLOY_ENVIRONMENT=$([[ ${{ github.ref_name }} == 'main' ]] && echo 'production' || echo ${{ github.ref_name }})
+          DEPLOY_SUBDOMAIN=$([[ ${{ github.ref_name }} == 'main' ]] && echo '' || echo "${{ github.ref_name }}.")
+          echo "DEPLOY_ENVIRONMENT=$DEPLOY_ENVIRONMENT" >> $GITHUB_ENV
+          echo "DEPLOY_SUBDOMAIN=$DEPLOY_SUBDOMAIN" >> $GITHUB_ENV
+  build:
+    name: Build application
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v3
+
+      - name: "🔧 setup Bun"
+        uses: oven-sh/setup-bun@v1
+
+      - name: "📦 install dependencies"
+        run: bun install
+
+      - name: "🚀 static app"
+        run: bun run build
+
+      - name: "📂 production artifacts"
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: dist
+
+  release:
+    environment:
+      name: ${{ needs.setup.outputs.DEPLOY_ENVIRONMENT }}
+      url: https://${{ needs.setup.outputs.DEPLOY_SUBDOMAIN }}app.opensauced.pizza
+    name: Semantic release
+    needs:
+      - setup
+      - build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.OS_GITHUB_APP_ID }}
+          private_key: ${{ secrets.OS_GITHUB_APP_PRIVATE_KEY }}
+
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ steps.generate_token.outputs.token }}
+
+      - name: "📂 download build artifacts"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: build
+          path: dist
+
+      - name: "🚀 release"
+        id: semantic-release
+        uses: open-sauced/release@v2
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+
+  cleanup:
+    name: Cleanup actions
+    needs:
+      - release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: "♻️ remove build artifacts"
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: |
+            build

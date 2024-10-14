@@ -1,0 +1,27 @@
+name: Development
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+jobs:
+  test:
+    uses: open-sauced/hot/.github/workflows/development.yml@main
+  build:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v2
+
+      - name: "🔧 setup Bun"
+        uses: oven-sh/setup-bun@v1
+
+      - name: "📦 install dependencies"
+        run: bun install
+
+      - name: "📦 run build"
+        run: bun run build

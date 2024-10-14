@@ -1,0 +1,65 @@
+{
+  "name": "@open-sauced/explore.opensauced.pizza",
+  "description": "Explore dot Open Sauced is an interactive in-browser GraphQL IDE based on GraphiQL and OneGraphAuth",
+  "version": "1.10.0",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "build"
+  ],
+  "author": "TED Vortex <ted.vortex@gmail.com>",
+  "bugs": "https://github.com/open-sauced/explore.opensauced.pizza/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/open-sauced/explore.opensauced.pizza.git"
+  },
+  "engines": {
+    "node": ">=14",
+    "npm": ">=7"
+  },
+  "dependencies": {
+    "graphiql": "^1.4.7",
+    "graphiql-explorer": "^0.6.3",
+    "graphql": "^15.5.0",
+    "onegraph-auth": "^4.0.2",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-responsive": "^8.2.0",
+    "use-persisted-state": "^0.3.3"
+  },
+  "devDependencies": {
+    "@open-sauced/check-engines": "^1.1.1",
+    "@open-sauced/conventional-commit": "^1.0.1",
+    "@open-sauced/semantic-release-conventional-config": "^2.0.4",
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "react-scripts": "4.0.3",
+    "typescript": "^4.4.4",
+    "web-vitals": "^2.1.2"
+  },
+  "scripts": {
+    "preinstall": "npx @open-sauced/check-engines",
+    "prestart": "npx @open-sauced/check-engines",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "push": "npx @open-sauced/conventional-commit",
+    "lint": "eslint . --report-unused-disable-directives",
+    "format": "npm run lint -- --fix",
+    "semantic-release": "npx semantic-release"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
