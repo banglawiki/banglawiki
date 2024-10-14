@@ -1,0 +1,38 @@
+owner: open-sauced
+repo: status.opensauced.pizza
+user-agent: open-sauced
+
+sites:
+  - name: insights.opensauced.pizza
+    url: https://insights.opensauced.pizza/
+  - name: hot.opensauced.pizza
+    url: https://hot.opensauced.pizza/
+  - name: api.opensauced.pizza
+    url: https://api.opensauced.pizza/
+  - name: app.opensauced.pizza
+    url: https://app.opensauced.pizza/
+  - name: docs.opensauced.pizza
+    url: https://docs.opensauced.pizza/
+  - name: explore.opensauced.pizza
+    url: https://explore.opensauced.pizza/
+
+status-website:
+  theme: night
+  cname: status.opensauced.pizza
+  logoUrl: https://hot.opensauced.pizza/static/openSauced.9ade9e5f.svg
+  name: OpenSauced Status Monitor
+  introTitle: "**OpenSauced** is a platform for open source contributors to find and maintain their next contribution."
+  introMessage: This is the status.opensauced.pizza site, where you can see the status of all the OpenSauced websites, and outages are automatically reported. Uses [Upptime](https://github.com/upptime/upptime)
+  navbar:
+    - title: Status
+      href: ./
+    - title: GitHub Repo
+      href: https://github.com/$OWNER/$REPO
+    - title: Open Sauced Org
+      href: https://github.com/$OWNER
+  commitMessages:
+    commitAuthorName: "0-vortex"
+    commitAuthorEmail: "237133+0-vortex@users.noreply.github.com"
+
+assignees:
+  - 0-vortex
